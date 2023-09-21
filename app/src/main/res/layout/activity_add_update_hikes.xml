@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddUpdateHikesActivity">
+
+    <ImageView
+        android:id="@+id/imageHike"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="0dp"
+        android:src="@drawable/ic_addphoto_black"
+        android:background="@drawable/border"
+        />
+
+    <EditText
+        android:id="@+id/nameHike"
+        android:layout_below="@id/imageHike"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Name of Hike" />
+
+    <EditText
+        android:id="@+id/location"
+        android:layout_below="@id/nameHike"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Location" />
+
+    <LinearLayout
+        android:id="@+id/containerForm1"
+        android:layout_below="@id/location"
+        android:layout_width="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/dateHike"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:inputType="datetime"
+            android:hint="Date of hike" />
+
+        <EditText
+            android:id="@+id/lengthHike"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:inputType="number"
+            android:hint="Length of hike (km)" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/descriptionHike"
+        android:layout_below="@id/containerForm1"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textLongMessage"
+        android:hint="Description for the hike" />
+
+    <TextView
+        android:id="@+id/textView_parking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/descriptionHike"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:text="Parking available"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <RadioGroup
+        android:id="@+id/parkingGroup"
+        android:layout_below="@id/textView_parking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        >
+
+        <RadioButton
+        android:id="@+id/parkingRadio1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Yes">
+
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/parkingRadio2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No">
+        </RadioButton>
+    </RadioGroup>
+    <TextView
+        android:id="@+id/textView_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/parkingGroup"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:text="Level of the hike"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+    <RadioGroup
+        android:id="@+id/levelGroup"
+        android:layout_below="@id/textView_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        >
+        <RadioButton
+            android:id="@+id/levelRadio1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Easy">
+
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/levelRadio2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Medium">
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/levelRadio3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hard">
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/levelRadio4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Extremely Hard">
+        </RadioButton>
+    </RadioGroup>
+
+
+
+</RelativeLayout>
