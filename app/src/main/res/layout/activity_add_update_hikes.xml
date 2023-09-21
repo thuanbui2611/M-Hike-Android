@@ -5,7 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddUpdateHikesActivity">
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <ImageView
         android:id="@+id/imageHike"
         android:layout_centerHorizontal="true"
@@ -16,8 +22,9 @@
         android:background="@drawable/border"
         />
 
-    <EditText
-        android:id="@+id/nameHike"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/nameHikeLayout"
         android:layout_below="@id/imageHike"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
@@ -25,21 +32,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:hint="Name of Hike" />
+        app:endIconMode="clear_text"
+        android:hint="Name of Hike">
 
-    <EditText
-        android:id="@+id/location"
-        android:layout_below="@id/nameHike"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nameHike"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:hint="Location" />
+        app:endIconMode="clear_text"
+        android:hint="Location">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <LinearLayout
         android:id="@+id/containerForm1"
+        android:layout_marginTop="10dp"
         android:layout_below="@id/location"
         android:layout_width="match_parent"
         android:layout_marginStart="15dp"
@@ -47,116 +69,167 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/dateHike"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginEnd="5dp"
             android:inputType="datetime"
-            android:hint="Date of hike" />
+            app:endIconMode="clear_text"
+            android:hint="Date of hike" >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/dateHike"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/lengthHike"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="5dp"
             android:inputType="number"
-            android:hint="Length of hike (km)" />
-
+            android:hint="Length of hike (km)"
+            app:endIconMode="clear_text" >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lengthHike"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/descriptionHike"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_below="@id/containerForm1"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textLongMessage"
-        android:hint="Description for the hike" />
+        android:hint="Description for the hike"
+        app:endIconMode="clear_text">
 
-    <TextView
-        android:id="@+id/textView_parking"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/descriptionHike"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="15dp"
-        android:text="Parking available"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/descriptionHike"
+            android:layout_width="match_parent"
+            android:gravity="start"
+            android:layout_height="100dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <RadioGroup
-        android:id="@+id/parkingGroup"
-        android:layout_below="@id/textView_parking"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        >
-
-        <RadioButton
-        android:id="@+id/parkingRadio1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Yes">
-
-        </RadioButton>
-
-        <RadioButton
-            android:id="@+id/parkingRadio2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="No">
-        </RadioButton>
-    </RadioGroup>
-    <TextView
-        android:id="@+id/textView_level"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/parkingGroup"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
-        android:text="Level of the hike"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
-    <RadioGroup
-        android:id="@+id/levelGroup"
-        android:layout_below="@id/textView_level"
-        android:layout_width="wrap_content"
+        android:layout_marginEnd="15dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        >
-        <RadioButton
-            android:id="@+id/levelRadio1"
-            android:layout_width="match_parent"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Easy">
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/textView_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/parkingGroup"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
+                android:text="Level of the hike"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+            <RadioGroup
+                android:id="@+id/levelRadioGroup"
+                android:layout_below="@id/textView_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                >
+                <RadioButton
+                    android:id="@+id/levelRadio1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Easy"
+                    android:tag="Easy">
 
-        </RadioButton>
+                </RadioButton>
 
-        <RadioButton
-            android:id="@+id/levelRadio2"
-            android:layout_width="match_parent"
+                <RadioButton
+                    android:id="@+id/levelRadio2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Medium"
+                    android:tag="Medium">
+                </RadioButton>
+                <RadioButton
+                    android:id="@+id/levelRadio3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hard"
+                    android:tag="Hard">
+                </RadioButton>
+            </RadioGroup>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Medium">
-        </RadioButton>
-        <RadioButton
-            android:id="@+id/levelRadio3"
-            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/textView_parking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/descriptionHike"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
+                android:text="Parking available"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+            <RadioGroup
+                android:id="@+id/parkingRadioGroup"
+                android:layout_below="@id/parkingRadioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                >
+
+                <RadioButton
+                    android:id="@+id/parkingRadio1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Yes"
+                    android:tag="1">
+
+                </RadioButton>
+
+                <RadioButton
+                    android:id="@+id/parkingRadio2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:tag="0">
+                </RadioButton>
+            </RadioGroup>
+        </LinearLayout>
+    </LinearLayout>
+        <CheckBox
+            android:id="@+id/cb_confirm_hikes"
+            android:layout_marginStart="15dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hard">
-        </RadioButton>
-        <RadioButton
-            android:id="@+id/levelRadio4"
-            android:layout_width="match_parent"
+            android:text="Agree with the terms and conditions"
+            />
+        <Button
+            android:id="@+id/btn_addHike"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Extremely Hard">
-        </RadioButton>
-    </RadioGroup>
-
-
-
+            android:layout_gravity="end"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:text="Add hike"
+            />
+    </LinearLayout>
+</ScrollView>
 </RelativeLayout>
