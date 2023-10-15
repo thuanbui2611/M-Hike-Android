@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="5dp"
-            android:inputType="number"
+            android:inputType="number|numberDecimal"
             android:hint="Length of hike (km)"
             app:endIconMode="clear_text" >
             <com.google.android.material.textfield.TextInputEditText
@@ -172,35 +172,38 @@
                 </RadioButton>
             </RadioGroup>
         </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/parkingGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/textView_parking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/descriptionHike"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
                 android:text="Parking available"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
+
             <RadioGroup
                 android:id="@+id/parkingRadioGroup"
-                android:layout_below="@id/parkingRadioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                >
+                android:layout_below="@id/parkingRadioGroup"
+                android:layout_marginStart="15dp">
 
                 <RadioButton
                     android:id="@+id/parkingRadio1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Yes"
-                    android:tag="1">
+                    android:tag="Yes"
+                    android:text="Yes">
 
                 </RadioButton>
 
@@ -208,9 +211,8 @@
                     android:id="@+id/parkingRadio2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="No"
-                    android:tag="0">
-                </RadioButton>
+                    android:tag="No"
+                    android:text="No"></RadioButton>
             </RadioGroup>
         </LinearLayout>
     </LinearLayout>

@@ -5,6 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
+    <!--RecyclerView: show all hikes-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/hikesRV"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/hike_item"
+        android:clipToPadding="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 <!--FAB Button: Start addHikeActivity to add/edit record-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addHikeBtn"
