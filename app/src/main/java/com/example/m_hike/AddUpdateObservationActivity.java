@@ -3,35 +3,28 @@ package com.example.m_hike;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.canhub.cropper.CropImage;
 import com.canhub.cropper.CropImageContract;
 import com.canhub.cropper.CropImageContractOptions;
 import com.canhub.cropper.CropImageOptions;
@@ -39,14 +32,11 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
 
-public class AddUpdateHikesActivity extends AppCompatActivity {
-
-    private ImageView imageHike;
-    private TextInputEditText nameHike, location, dateHike, lengthHike, descriptionHike;
+public class AddUpdateObservationActivity extends AppCompatActivity {
+    private ImageView imageObs;
+    private TextInputEditText name_input, comment_input, time_input;
     private boolean isEditMode = false;
-    private RadioGroup levelRadioGroup, parkingRadioGroup;
-    private Button btn_addHike;
-
+    private Button btn_addObs;
     //permission constants
     private static final int CAMERA_REQUEST_CODE = 100;
     private static final int STORAGE_REQUEST_CODE = 101;
@@ -59,166 +49,117 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
     //actionbar
     private ActionBar actionBar;
     //db helper
-    String id, name, location_db, date, description, level, parkingAvailable, length, createdAt, lastUpdated;;
+    String id, hikeID, name, comment, time, createdAt, lastUpdated;
     private MyDbHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_update_hikes);
+        setContentView(R.layout.activity_add_update_observation);
 
         actionBar = getSupportActionBar();
-        //title
-        actionBar.setTitle("Add a hike");
-        //back button
+        actionBar.setTitle("Add a observation");
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        imageHike = findViewById(R.id.imageHike);
-        nameHike = findViewById(R.id.nameHike);
-        location = findViewById(R.id.location);
-        dateHike = findViewById(R.id.dateHike);
-        lengthHike = findViewById(R.id.lengthHike);
-        descriptionHike = findViewById(R.id.descriptionHike);
-        parkingRadioGroup = findViewById(R.id.parkingRadioGroup);
-        levelRadioGroup = findViewById(R.id.levelRadioGroup);
-        btn_addHike = findViewById(R.id.btn_addHike);
+        imageObs = findViewById(R.id.imageObs);
+        name_input = findViewById(R.id.nameObs);
+        comment_input = findViewById(R.id.commentObs);
+        time_input = findViewById(R.id.timeObs);
+        btn_addObs = findViewById(R.id.btn_submitAddObs);
 
-
-        //get data from intent
+        //Get data pass from HikeDetailActivity
         Intent intent = getIntent();
         isEditMode = intent.getBooleanExtra("isEditMode", false);
+        hikeID = intent.getStringExtra("HIKE_ID");
 
-        //set data to views
-        if(isEditMode){
-            //Update hike
-            actionBar.setTitle("Update Hike");
+        if(isEditMode)
+        {
+            //Update
+            actionBar.setTitle("Update Observation");
             id = intent.getStringExtra("ID");
-            name = intent.getStringExtra("HIKENAME");
+            name = intent.getStringExtra("NAME");
+            time = intent.getStringExtra("TIME");
+            comment = intent.getStringExtra("COMMENT");
             imageUri = Uri.parse(intent.getStringExtra("IMAGE"));
-            location_db = intent.getStringExtra("LOCATION");
-            date = intent.getStringExtra("DATE");
-            length = intent.getStringExtra("LENGTH");
-            level = intent.getStringExtra("LEVEL");
-            description = intent.getStringExtra("DESCRIPTION");
-            parkingAvailable = intent.getStringExtra("PARKING");
             createdAt = intent.getStringExtra("CREATEDAT");
             lastUpdated = intent.getStringExtra("LASTUPDATED");
             //set data to views
-            nameHike.setText(name);
-            location.setText(location_db);
-            dateHike.setText(date);
-            lengthHike.setText(length);
-            descriptionHike.setText(description);
-            //set data to radio level, parking radio group
-            int levelRadioCount = levelRadioGroup.getChildCount();
-            for(int i = 0; i < levelRadioCount; i++){
-                RadioButton levelButton = (RadioButton) levelRadioGroup.getChildAt(i);
-                if(levelButton.getText().toString().equals(level)){
-                    levelButton.setChecked(true);
-                    break;
-                }
-            }
-            int parkingRadioCount = parkingRadioGroup.getChildCount();
-            for(int i = 0; i < parkingRadioCount; i++){
-                RadioButton parkingButton = (RadioButton) parkingRadioGroup.getChildAt(i);
-                if(parkingButton.getText().toString().equals(parkingAvailable)){
-                    parkingButton.setChecked(true);
-                    break;
-                }
-            }
-            //set data to images
+            name_input.setText(name);
+            comment_input.setText(comment);
+            time_input.setText(time);
             if(imageUri.toString().equals("null")){
                 //no image, set to default image
-                imageHike.setImageResource(R.drawable.ic_image_hike);
+                imageObs.setImageResource(R.drawable.ic_image_hike);
             } else {
-                imageHike.setImageURI(imageUri);
+                imageObs.setImageURI(imageUri);
             }
+
         } else {
-            //Create hike
-            actionBar.setTitle("Add Hike");
+            //Create
+            actionBar.setTitle("Create Observation");
         }
 
         //init dbHelper
         dbHelper = new MyDbHelper(this);
         //init permission arrays
-        cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES};
+        cameraPermissions = new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.READ_MEDIA_IMAGES};
         storagePermissions = new String[]{Manifest.permission.READ_MEDIA_IMAGES};
-
-        //click image view to show image pick dialog
-        imageHike.setOnClickListener(new View.OnClickListener(){
+        //click on imageview to show image pick dialog
+        imageObs.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View view) {
                 //show image pick dialog
                 imagePickDialog();
             }
         });
-
-        //click add/update button to add/update the hike
-        btn_addHike.setOnClickListener(new View.OnClickListener(){
+        //click add/update button to add/update the observation
+        btn_addObs.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View view) {
                 inputData();
             }
         });
+
     }
 
-    private void inputData(){
+    private void inputData() {
         //get input data
-        name = nameHike.getText().toString().trim();
-        location_db = location.getText().toString().trim();
-        date = dateHike.getText().toString().trim();
-        description = descriptionHike.getText().toString().trim();
-        length = lengthHike.getText().toString();
+        name = name_input.getText().toString().trim();
+        time = time_input.getText().toString().trim();
+        comment = comment_input.getText().toString().trim();
 
-        int selectedLevelId = levelRadioGroup.getCheckedRadioButtonId();
-        if(selectedLevelId != -1)
-        {
-            RadioButton radioButton = findViewById(selectedLevelId);
-            level = radioButton.getTag().toString();
-        }
-        int selectedParking = parkingRadioGroup.getCheckedRadioButtonId();
-        if(selectedParking != -1)
-        {
-            RadioButton radioButton = findViewById(selectedParking);
-            parkingAvailable = radioButton.getTag().toString();
-        }
-        String timestamp = "" + System.currentTimeMillis();
+        String timestamp = ""+ System.currentTimeMillis();
         if(isEditMode){
-            //update hike
-            dbHelper.updateHike(
+            //update observation
+            dbHelper.updateObservation(
                     ""+id,
+                    ""+hikeID,
                     ""+name,
-                    ""+location_db,
-                    ""+date,
-                    ""+length,
-                    ""+description,
-                    ""+parkingAvailable,
-                    ""+level,
+                    ""+time,
+                    ""+comment,
                     ""+imageUri,
                     ""+createdAt,
                     ""+timestamp
             );
-            Toast.makeText(this, "Update Hike Successfully", Toast.LENGTH_SHORT).show();
-        } else {
-            //create new hike
-            dbHelper.insertHike(
+            Toast.makeText(this, "Update Observation Successfully", Toast.LENGTH_SHORT).show();
+        } else
+        {
+            //create observation
+            dbHelper.insertObservation(
+                    ""+hikeID,
                     ""+name,
-                    ""+location_db,
-                    ""+date,
-                    ""+length,
-                    ""+description,
-                    ""+parkingAvailable,
-                    ""+level,
+                    ""+time,
+                    ""+comment,
                     ""+imageUri,
                     ""+timestamp,
                     ""+timestamp
             );
         }
-
-        Toast.makeText(this, "Successfully Add Hike: " + name, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Successfully Add an Observation", Toast.LENGTH_SHORT).show();
     }
 
-    private void imagePickDialog(){
+    private void imagePickDialog() {
         //options to display in dialog
         String[] options = {"Camera", "Gallery"};
         //dialog
@@ -251,7 +192,6 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
         //create/show dialog
         builder.create().show();
     }
-
     private boolean checkStoragePermission(){
         //check if storage permission is enable or not
         boolean result = ContextCompat.checkSelfPermission(this,
@@ -285,25 +225,25 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> pickFromCameraLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult activityResult) {
-            int resultCode = activityResult.getResultCode();
-            if(resultCode == RESULT_OK){
-                // Read the image data from the file specified by imageUri
-                Bitmap bitmap = null;
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                @Override
+                public void onActivityResult(ActivityResult activityResult) {
+                    int resultCode = activityResult.getResultCode();
+                    if(resultCode == RESULT_OK){
+                        // Read the image data from the file specified by imageUri
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        CropImageOptions cropImageOptions = new CropImageOptions();
+                        cropImageOptions.imageSourceIncludeGallery = true;
+                        cropImageOptions.imageSourceIncludeCamera = true;
+                        CropImageContractOptions cropImageContractOptions = new CropImageContractOptions(imageUri, cropImageOptions);
+                        cropImage.launch(cropImageContractOptions);
+                    }
                 }
-                CropImageOptions cropImageOptions = new CropImageOptions();
-                cropImageOptions.imageSourceIncludeGallery = true;
-                cropImageOptions.imageSourceIncludeCamera = true;
-                CropImageContractOptions cropImageContractOptions = new CropImageContractOptions(imageUri, cropImageOptions);
-                cropImage.launch(cropImageContractOptions);
-            }
-        }
-    });
+            });
 
     ActivityResultLauncher<Intent> pickFromGalleryLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -377,14 +317,14 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
 
     ActivityResultLauncher<CropImageContractOptions> cropImage = registerForActivityResult(
             new CropImageContract(), result -> {
-        if (result.isSuccessful()) {
-            Uri croppedImageUri = result.getUriContent();
-            imageUri = croppedImageUri;
-            //set image
-            imageHike.setImageURI(croppedImageUri);
-        } else {
-            Exception error = result.getError();
-            Toast.makeText(this, "Error: " + error , Toast.LENGTH_SHORT).show();
-        }
-    });
+                if (result.isSuccessful()) {
+                    Uri croppedImageUri = result.getUriContent();
+                    imageUri = croppedImageUri;
+                    //set image
+                    imageObs.setImageURI(croppedImageUri);
+                } else {
+                    Exception error = result.getError();
+                    Toast.makeText(this, "Error: " + error , Toast.LENGTH_SHORT).show();
+                }
+            });
 }

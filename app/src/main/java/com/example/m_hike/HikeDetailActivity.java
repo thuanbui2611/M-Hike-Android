@@ -2,6 +2,7 @@ package com.example.m_hike;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +24,8 @@ public class HikeDetailActivity extends AppCompatActivity {
 
     private ImageView image;
     private TextView hikeName, location, date, parking, length, level,description, createdAt, lastUpdated;
-
+    private Button addObservationBtn;
+    private RecyclerView observationRV;
     private ActionBar actionBar;
     private String hikeID;
     private MyDbHelper dbHelper;
@@ -39,6 +43,7 @@ public class HikeDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         hikeID = intent.getStringExtra("HIKE_ID");
         //init
+        addObservationBtn = findViewById(R.id.btn_addObs);
         dbHelper = new MyDbHelper(this);
 
         image = findViewById(R.id.hikeImageDT);
@@ -53,6 +58,17 @@ public class HikeDetailActivity extends AppCompatActivity {
         lastUpdated = findViewById(R.id.lastUpdatedDT);
 
         showHikeDetails();
+
+        //Click button add observation
+        addObservationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HikeDetailActivity.this, AddUpdateObservationActivity.class);
+                intent.putExtra("isEditMode", false);
+                intent.putExtra("HIKE_ID", hikeID);
+                startActivity(intent);
+            }
+        });
     }
 
     private void showHikeDetails() {
@@ -60,6 +76,8 @@ public class HikeDetailActivity extends AppCompatActivity {
         String selectQuery = "SELECT * FROM " + Constants.TABLE_NAME + " WHERE " + Constants.C_ID +" =\"" + hikeID+"\"";
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
+        //get recycleView observation
+        observationRV = findViewById(R.id.ObservationRV);
 
         if(cursor.moveToFirst()){
             do{
@@ -93,8 +111,7 @@ public class HikeDetailActivity extends AppCompatActivity {
 
                 Calendar c2 = Calendar.getInstance(Locale.getDefault());
                 c1.setTimeInMillis(Long.parseLong(lastUpdatedGet));
-                String lastUpdatedTime = (String) DateFormat.format("dd/MM/yyyy hh:mm:aa", c1);
-
+                String lastUpdatedTime = (String) DateFormat.format("dd/MM/yyyy hh:mm:aa", c2);
 
                 hikeName.setText(name);
                 location.setText(locationGet);
@@ -114,8 +131,21 @@ public class HikeDetailActivity extends AppCompatActivity {
             } while (cursor.moveToNext());
         }
         db.close();
+
+        //get observation
+        loadObservation(hikeID);
     }
 
+    private void loadObservation(String hikeID){
+        ObservationAdapter obsAdapter = new ObservationAdapter(HikeDetailActivity.this,
+                dbHelper.getObservationByHikeID(hikeID));
+        observationRV.setAdapter(obsAdapter);
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        loadObservation(hikeID);
+    }
     @Override
     public boolean onSupportNavigateUp(){
         onBackPressed(); // go to prev activity

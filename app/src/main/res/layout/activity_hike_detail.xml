@@ -223,6 +223,29 @@
                 </LinearLayout>
             </TableRow>
         </TableLayout>
+        <Button
+            android:id="@+id/btn_addObs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:text="Add an observation"
+            />
+        <!--RecyclerView: Observation-->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ObservationRV"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/observation_item"
+                android:clipToPadding="false"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+
+
     </LinearLayout>
 
 </ScrollView>

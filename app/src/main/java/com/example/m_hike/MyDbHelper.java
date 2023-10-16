@@ -24,6 +24,8 @@ public class MyDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         //Create table Hike on the db
         sqLiteDatabase.execSQL(Constants.CREATE_TABLE_QUERY);
+        //Create table Observation
+        sqLiteDatabase.execSQL(ObservationConstants.CREATE_TABLE_QUERY);
     }
 
     @Override
@@ -32,6 +34,9 @@ public class MyDbHelper extends SQLiteOpenHelper {
         //drop older table if exists
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Constants.TABLE_NAME);
         Log.w(this.getClass().getName(), Constants.TABLE_NAME + " database upgrade to version " + newVersion + " - old data lost");
+
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ObservationConstants.TABLE_NAME);
+        Log.w(this.getClass().getName(), ObservationConstants.TABLE_NAME + " database upgrade to version " + newVersion + " - old data lost");
         //create table again
         onCreate(sqLiteDatabase);
     }
@@ -166,6 +171,9 @@ public class MyDbHelper extends SQLiteOpenHelper {
 
     public void deleteHike(String id){
         database = getWritableDatabase();
+        //Delete all relate observation of the hike
+        database.delete(ObservationConstants.TABLE_NAME, ObservationConstants.C_HIKE_ID + " = ?", new String[]{id});
+        //Delete hike
         database.delete(Constants.TABLE_NAME, Constants.C_ID + " = ?", new String[]{id});
         database.close();
     }
@@ -176,6 +184,75 @@ public class MyDbHelper extends SQLiteOpenHelper {
         database.close();
     }
 
+    //Observation
+    public ArrayList<ObservationModel> getObservationByHikeID(String hikeID)
+    {
+        database = getReadableDatabase();
+        ArrayList<ObservationModel> observationList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + ObservationConstants.TABLE_NAME + " WHERE " +
+                ObservationConstants.C_HIKE_ID + " = '" + hikeID + "'"
+                + " ORDER BY " + ObservationConstants.C_CREATED_AT + " DESC";
+
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if(cursor.moveToFirst()){
+            do{
+                @SuppressLint("Range") int idColumnIndex = cursor.getColumnIndex(ObservationConstants.C_ID);
+                @SuppressLint("Range") int nameColumnIndex = cursor.getColumnIndex(ObservationConstants.C_NAME);
+                @SuppressLint("Range") int timeColumnIndex = cursor.getColumnIndex(ObservationConstants.C_TIME);
+                @SuppressLint("Range") int commentColumnIndex = cursor.getColumnIndex(ObservationConstants.C_COMMENT);
+                @SuppressLint("Range") int imageColumnIndex = cursor.getColumnIndex(ObservationConstants.C_IMAGE);
+                @SuppressLint("Range") int createdAtColumnIndex = cursor.getColumnIndex(ObservationConstants.C_CREATED_AT);
+                @SuppressLint("Range") int lastUpdatedColumnIndex = cursor.getColumnIndex(ObservationConstants.C_LAST_UPDATED);
+                @SuppressLint("Range") int hikeIDColumnIndex = cursor.getColumnIndex(ObservationConstants.C_HIKE_ID);
+                ObservationModel obsModel = new ObservationModel(
+                        ""+cursor.getInt(idColumnIndex),
+                        ""+cursor.getString(nameColumnIndex),
+                        ""+cursor.getString(timeColumnIndex),
+                        ""+cursor.getString(commentColumnIndex),
+                        ""+cursor.getString(imageColumnIndex),
+                        ""+cursor.getString(createdAtColumnIndex),
+                        ""+cursor.getString(lastUpdatedColumnIndex),
+                        ""+cursor.getString(hikeIDColumnIndex));
+                observationList.add(obsModel);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return observationList;
+    }
+    public long insertObservation(String hikeID, String name, String time, String comment, String image, String createdAt, String lastUpdated){
+        database = getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(ObservationConstants.C_HIKE_ID, hikeID);
+        values.put(ObservationConstants.C_NAME, name);
+        values.put(ObservationConstants.C_TIME, time);
+        values.put(ObservationConstants.C_COMMENT, comment);
+        values.put(ObservationConstants.C_IMAGE, image);
+        values.put(ObservationConstants.C_CREATED_AT, createdAt);
+        values.put(ObservationConstants.C_LAST_UPDATED, lastUpdated);
+
+        return database.insertOrThrow(ObservationConstants.TABLE_NAME, null, values);
+    }
+    public void updateObservation(String id, String hikeID,String name, String time, String comment, String image, String createdAt, String lastUpdated){
+        database = getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(ObservationConstants.C_HIKE_ID, hikeID);
+        values.put(ObservationConstants.C_NAME, name);
+        values.put(ObservationConstants.C_TIME, time);
+        values.put(ObservationConstants.C_COMMENT, comment);
+        values.put(ObservationConstants.C_IMAGE, image);
+        values.put(ObservationConstants.C_CREATED_AT, createdAt);
+        values.put(ObservationConstants.C_LAST_UPDATED, lastUpdated);
+
+        database.update(ObservationConstants.TABLE_NAME, values, Constants.C_ID +" = ?",new String[]{id});
+        database.close();
+    }
+    public void deleteObservation(String id){
+        database = getWritableDatabase();
+        database.delete(ObservationConstants.TABLE_NAME, ObservationConstants.C_ID + " = ?", new String[]{id});
+        database.close();
+    }
     public void deleteAllTables(){
         // Get a list of all tables in the database
         Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
