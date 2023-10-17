@@ -31,13 +31,12 @@ android {
 
 dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
     //Recycle view and material library
     implementation("androidx.recyclerview:recyclerview:1.3.1")
     implementation("com.google.android.material:material:1.9.0")
-
     //image cropper
     implementation("com.vanniktech:android-image-cropper:4.5.0")
+    //datetime picker
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     testImplementation("junit:junit:4.13.2")

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -59,6 +60,17 @@ public class HikeAdapter extends RecyclerView.Adapter<HikeAdapter.HolderHike>{
         holder.hikeName.setText(hikeName);
         holder.location.setText(location);
         holder.date.setText(date);
+        holder.level.setText(level);
+
+
+        if(level.trim().toLowerCase().equals("easy"))
+        {
+            holder.level.setTextColor(ContextCompat.getColor(context, R.color.green));
+        } else if (level.trim().toLowerCase().equals("medium")) {
+            holder.level.setTextColor(ContextCompat.getColor(context, R.color.yellow));
+        } else if (level.trim().toLowerCase().equals("hard")) {
+            holder.level.setTextColor(ContextCompat.getColor(context, R.color.red));
+        };
         holder.level.setText(level);
 
         if(image.equals("null")){

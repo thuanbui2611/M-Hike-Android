@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,9 +22,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.canhub.cropper.CropImageContract;
@@ -31,9 +36,13 @@ import com.canhub.cropper.CropImageOptions;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class AddUpdateObservationActivity extends AppCompatActivity {
     private ImageView imageObs;
+    private Calendar selectedDateTime;
     private TextInputEditText name_input, comment_input, time_input;
     private boolean isEditMode = false;
     private Button btn_addObs;
@@ -62,6 +71,7 @@ public class AddUpdateObservationActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        selectedDateTime = Calendar.getInstance();
         imageObs = findViewById(R.id.imageObs);
         name_input = findViewById(R.id.nameObs);
         comment_input = findViewById(R.id.commentObs);
@@ -73,6 +83,24 @@ public class AddUpdateObservationActivity extends AppCompatActivity {
         isEditMode = intent.getBooleanExtra("isEditMode", false);
         hikeID = intent.getStringExtra("HIKE_ID");
 
+        //on click date, pop up calender
+        time_input.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    showDateTimePicker();
+                    return true;
+                }
+                return false;
+            }
+        });
+        //on click date, prevent open keyboard
+        time_input.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         if(isEditMode)
         {
             //Update
@@ -121,6 +149,27 @@ public class AddUpdateObservationActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void showDateTimePicker() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (DatePicker datePicker, int year, int month, int dayOfMonth) -> {
+            selectedDateTime.set(Calendar.YEAR, year);
+            selectedDateTime.set(Calendar.MONTH, month);
+            selectedDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, (TimePicker timePicker, int hourOfDay, int minute) -> {
+                selectedDateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                selectedDateTime.set(Calendar.MINUTE, minute);
+
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm, dd/MM/yyyy", Locale.getDefault());
+                String selectedDateTimeString = format.format(selectedDateTime.getTime());
+                time_input.setText(selectedDateTimeString);
+            }, selectedDateTime.get(Calendar.HOUR_OF_DAY), selectedDateTime.get(Calendar.MINUTE), false);
+
+            timePickerDialog.show();
+        }, selectedDateTime.get(Calendar.YEAR), selectedDateTime.get(Calendar.MONTH), selectedDateTime.get(Calendar.DAY_OF_MONTH));
+
+        datePickerDialog.show();
     }
 
     private void inputData() {
