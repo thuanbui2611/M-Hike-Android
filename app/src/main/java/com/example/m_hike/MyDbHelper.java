@@ -125,7 +125,12 @@ public class MyDbHelper extends SQLiteOpenHelper {
     {
         database = getReadableDatabase();
         ArrayList<HikeModel> hikeList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + Constants.TABLE_NAME + " WHERE " + Constants.C_NAME + " LIKE '%" + query +"%'";
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_NAME + " WHERE " +
+                Constants.C_NAME + " LIKE '%" + query +"%' OR " +
+                Constants.C_DATE + " LIKE '%" + query +"%' OR " +
+                Constants.C_LENGTH + " LIKE '%" + query +"%' OR " +
+                Constants.C_LEVEL + " LIKE '%" + query +"%' OR " +
+                Constants.C_LOCATION + " LIKE '%" + query +"%'";
         Cursor cursor = database.rawQuery(selectQuery, null);
         if(cursor.moveToFirst()){
             do{

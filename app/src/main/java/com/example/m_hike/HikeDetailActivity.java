@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -108,11 +109,13 @@ public class HikeDetailActivity extends AppCompatActivity {
                 //convert timestamp to dd/mm/yyyy hh:mm aa
                 Calendar c1 = Calendar.getInstance(Locale.getDefault());
                 c1.setTimeInMillis(Long.parseLong(createdAtGet));
-                String createdAtTime = (String) DateFormat.format("dd/MM/yyyy hh:mm:aa", c1);
+                SimpleDateFormat createdAtFormat = new SimpleDateFormat("HH:mm, dd/MM/yyyy", Locale.getDefault());
+                String createdAtTime = createdAtFormat.format(c1.getTime());
 
                 Calendar c2 = Calendar.getInstance(Locale.getDefault());
-                c1.setTimeInMillis(Long.parseLong(lastUpdatedGet));
-                String lastUpdatedTime = (String) DateFormat.format("dd/MM/yyyy hh:mm:aa", c2);
+                c2.setTimeInMillis(Long.parseLong(lastUpdatedGet));
+                SimpleDateFormat lastUpdatedFormat = new SimpleDateFormat("HH:mm, dd/MM/yyyy", Locale.getDefault());
+                String lastUpdatedTime = lastUpdatedFormat.format(c2.getTime());
 
                 hikeName.setText(name);
                 location.setText(locationGet);
