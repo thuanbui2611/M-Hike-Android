@@ -2,6 +2,7 @@ package com.example.m_hike;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
@@ -118,11 +119,17 @@ public class HikeDetailActivity extends AppCompatActivity {
                 date.setText(dateGet);
                 parking.setText(parkingGet);
                 length.setText(lengthGet);
-                level.setText(levelGet);
                 description.setText(descriptionGet);
                 createdAt.setText(createdAtTime);
                 lastUpdated.setText(lastUpdatedTime);
-
+                if(levelGet.trim().toLowerCase().equals("easy"))
+                {
+                    level.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.green));
+                } else if (levelGet.trim().toLowerCase().equals("medium")) {
+                    level.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.yellow));
+                } else if (levelGet.trim().toLowerCase().equals("hard")) {
+                    level.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.red));
+                };
                 if(image.equals("null")){
                     image.setImageResource(R.drawable.ic_image_hike);
                 } else {

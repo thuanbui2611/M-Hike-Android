@@ -25,6 +25,7 @@ import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TimePicker;
@@ -38,12 +39,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class AddUpdateObservationActivity extends AppCompatActivity {
     private ImageView imageObs;
     private Calendar selectedDateTime;
     private TextInputEditText name_input, comment_input, time_input;
+    private CheckBox confirm_cb;
     private boolean isEditMode = false;
     private Button btn_addObs;
     //permission constants
@@ -77,7 +80,12 @@ public class AddUpdateObservationActivity extends AppCompatActivity {
         comment_input = findViewById(R.id.commentObs);
         time_input = findViewById(R.id.timeObs);
         btn_addObs = findViewById(R.id.btn_submitAddObs);
+        confirm_cb = findViewById(R.id.cb_confirm_obs);
 
+        //Set default value to time (current time)
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm, dd/MM/yyyy", Locale.getDefault());
+        String defaultTime = format.format(new Date());
+        time_input.setText(defaultTime);
         //Get data pass from HikeDetailActivity
         Intent intent = getIntent();
         isEditMode = intent.getBooleanExtra("isEditMode", false);
@@ -179,33 +187,52 @@ public class AddUpdateObservationActivity extends AppCompatActivity {
         comment = comment_input.getText().toString().trim();
 
         String timestamp = ""+ System.currentTimeMillis();
-        if(isEditMode){
-            //update observation
-            dbHelper.updateObservation(
-                    ""+id,
-                    ""+hikeID,
-                    ""+name,
-                    ""+time,
-                    ""+comment,
-                    ""+imageUri,
-                    ""+createdAt,
-                    ""+timestamp
-            );
-            Toast.makeText(this, "Update Observation Successfully", Toast.LENGTH_SHORT).show();
-        } else
+        if(validateInput())
         {
-            //create observation
-            dbHelper.insertObservation(
-                    ""+hikeID,
-                    ""+name,
-                    ""+time,
-                    ""+comment,
-                    ""+imageUri,
-                    ""+timestamp,
-                    ""+timestamp
-            );
+            if(isEditMode){
+                //update observation
+                dbHelper.updateObservation(
+                        ""+id,
+                        ""+hikeID,
+                        ""+name,
+                        ""+time,
+                        ""+comment,
+                        ""+imageUri,
+                        ""+createdAt,
+                        ""+timestamp
+                );
+                Toast.makeText(this, "Update Observation Successfully", Toast.LENGTH_SHORT).show();
+            } else
+            {
+                //create observation
+                dbHelper.insertObservation(
+                        ""+hikeID,
+                        ""+name,
+                        ""+time,
+                        ""+comment,
+                        ""+imageUri,
+                        ""+timestamp,
+                        ""+timestamp
+                );
+            }
+            Toast.makeText(this,"Successfully Add an Observation", Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(this,"Successfully Add an Observation", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private boolean validateInput()
+    {
+        boolean validateResult = true;
+        if(name.trim().isEmpty())
+        {
+            name_input.setError("Title of observation is required!");
+            validateResult = false;
+        }
+        if(!confirm_cb.isChecked())
+        {
+            Toast.makeText(this, "Please confirm to our terms and conditions!", Toast.LENGTH_SHORT).show();
+        }
+        return validateResult;
     }
 
     private void imagePickDialog() {

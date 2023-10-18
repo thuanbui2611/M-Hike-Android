@@ -98,7 +98,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/lengthHike"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:digits="0123456789."/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 

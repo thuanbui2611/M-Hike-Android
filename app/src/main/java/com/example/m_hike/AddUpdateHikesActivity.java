@@ -24,6 +24,7 @@ import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -45,6 +46,7 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
     private Calendar selectedDateTime;
     private ImageView imageHike;
     private TextInputEditText nameHike, location, dateHike, lengthHike, descriptionHike;
+    private CheckBox cb_confirm_hikes;
     private boolean isEditMode = false;
     private RadioGroup levelRadioGroup, parkingRadioGroup;
     private Button btn_addHike;
@@ -87,6 +89,7 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
         parkingRadioGroup = findViewById(R.id.parkingRadioGroup);
         levelRadioGroup = findViewById(R.id.levelRadioGroup);
         btn_addHike = findViewById(R.id.btn_addHike);
+        cb_confirm_hikes = findViewById(R.id.cb_confirm_hikes);
 
 
         //get data from intent
@@ -215,6 +218,7 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
         description = descriptionHike.getText().toString().trim();
         length = lengthHike.getText().toString();
 
+
         int selectedLevelId = levelRadioGroup.getCheckedRadioButtonId();
         if(selectedLevelId != -1)
         {
@@ -228,39 +232,84 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
             parkingAvailable = radioButton.getTag().toString();
         }
         String timestamp = "" + System.currentTimeMillis();
-        if(isEditMode){
-            //update hike
-            dbHelper.updateHike(
-                    ""+id,
-                    ""+name,
-                    ""+location_db,
-                    ""+date,
-                    ""+length,
-                    ""+description,
-                    ""+parkingAvailable,
-                    ""+level,
-                    ""+imageUri,
-                    ""+createdAt,
-                    ""+timestamp
-            );
-            Toast.makeText(this, "Update Hike Successfully", Toast.LENGTH_SHORT).show();
-        } else {
-            //create new hike
-            dbHelper.insertHike(
-                    ""+name,
-                    ""+location_db,
-                    ""+date,
-                    ""+length,
-                    ""+description,
-                    ""+parkingAvailable,
-                    ""+level,
-                    ""+imageUri,
-                    ""+timestamp,
-                    ""+timestamp
-            );
+        //validate
+        if(validateInput())
+        {
+            if(isEditMode){
+                //update hike
+                dbHelper.updateHike(
+                        ""+id,
+                        ""+name,
+                        ""+location_db,
+                        ""+date,
+                        ""+length,
+                        ""+description,
+                        ""+parkingAvailable,
+                        ""+level,
+                        ""+imageUri,
+                        ""+createdAt,
+                        ""+timestamp
+                );
+                Toast.makeText(this, "Update Hike Successfully", Toast.LENGTH_SHORT).show();
+            } else {
+                //create new hike
+                dbHelper.insertHike(
+                        ""+name,
+                        ""+location_db,
+                        ""+date,
+                        ""+length,
+                        ""+description,
+                        ""+parkingAvailable,
+                        ""+level,
+                        ""+imageUri,
+                        ""+timestamp,
+                        ""+timestamp
+                );
+            }
+            Toast.makeText(this, "Successfully Add Hike: " + name, Toast.LENGTH_SHORT).show();
         }
+    }
 
-        Toast.makeText(this, "Successfully Add Hike: " + name, Toast.LENGTH_SHORT).show();
+    private boolean validateInput(){
+        boolean validateResult = true;
+        if(name.trim().isEmpty())
+        {
+            nameHike.setError("Name is required!");
+            validateResult = false;
+        }
+        if(location_db.trim().isEmpty()){
+            location.setError("Location is required!");
+            validateResult = false;
+        }
+        if(date.trim().isEmpty())
+        {
+            dateHike.setError("Date is required!");
+            validateResult = false;
+        }
+        if(length.trim().isEmpty())
+        {
+            lengthHike.setError("Length is required!");
+            validateResult = false;
+        } else if (!length.matches("^(-)?\\d+(\\.\\d+)?$")) {
+            lengthHike.setError("Please input valid number");
+            validateResult = false;
+        }
+        if(levelRadioGroup.getCheckedRadioButtonId() == - 1)
+        {
+            Toast.makeText(this, "Please select a level of the hike!", Toast.LENGTH_SHORT).show();
+            validateResult = false;
+        }
+        if(parkingRadioGroup.getCheckedRadioButtonId() == -1)
+        {
+            Toast.makeText(this, "Please select parking available!", Toast.LENGTH_SHORT).show();
+            validateResult = false;
+        }
+        if(!cb_confirm_hikes.isChecked())
+        {
+            Toast.makeText(this, "Please confirm to our terms and conditions!", Toast.LENGTH_SHORT).show();
+            validateResult = false;
+        }
+        return validateResult;
     }
 
     private void imagePickDialog(){
