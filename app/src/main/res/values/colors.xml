@@ -10,4 +10,8 @@
     <color name="red">#FF0000</color>
     <color name="green">#1bbf44</color>
     <color name="yellow">#d4ca17</color>
+    <color name="primaryGreen">#4CAF50</color>
+    <color name="darkGreen">#388E3C</color>
+    <color name="secondaryOrange">#FF9800</color>
+    <color name="darkOrange">#F57C00</color>
 </resources>

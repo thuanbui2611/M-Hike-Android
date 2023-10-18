@@ -92,12 +92,12 @@ public class HikeAdapter extends RecyclerView.Adapter<HikeAdapter.HolderHike>{
         holder.moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showMoreDiaglog(id, hikeName, image, location, date, length, level, description, parking, createdAt, lastUpdated);
+                showMoreDialog(id, hikeName, image, location, date, length, level, description, parking, createdAt, lastUpdated);
             }
         });
     }
 
-    private void showMoreDiaglog(final String id, String hikeName, String image, String location, String date, String length, String level, String description, String parking, String createdAt, String lastUpdated) {
+    private void showMoreDialog(final String id, String hikeName, String image, String location, String date, String length, String level, String description, String parking, String createdAt, String lastUpdated) {
         String[] options = {"Edit", "Delete"};
         AlertDialog.Builder builder =  new AlertDialog.Builder(context);
         builder.setItems(options, new DialogInterface.OnClickListener() {

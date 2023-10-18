@@ -32,11 +32,15 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 app:endIconMode="clear_text"
+                app:counterEnabled="true"
+                app:counterMaxLength="50"
+                app:startIconDrawable="@drawable/ic_tag"
                 android:hint="Title of observation">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/nameObs"
                     android:layout_width="match_parent"
+                    android:maxLength="50"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/ic_calendar"
                 android:hint="Time">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -68,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textLongMessage"
                 android:hint="Comment for the hike"
+                app:startIconDrawable="@drawable/ic_description"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText

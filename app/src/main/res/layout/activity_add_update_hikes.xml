@@ -33,10 +33,14 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/ic_bookmark"
+        app:counterEnabled="true"
+        app:counterMaxLength="50"
         android:hint="Name of Hike">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nameHike"
+            android:maxLength="50"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -50,6 +54,7 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/ic_location"
         android:hint="Location">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -77,6 +82,7 @@
             android:layout_marginEnd="5dp"
             android:inputType="datetime"
             app:endIconMode="clear_text"
+            app:startIconDrawable="@drawable/ic_calendar"
             android:hint="Date of hike" >
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/dateHike"
@@ -93,8 +99,9 @@
             android:layout_weight="1"
             android:layout_marginStart="5dp"
             android:inputType="number|numberDecimal"
-            android:hint="Length of hike (km)"
-            app:endIconMode="clear_text" >
+            android:hint="Length (km)"
+            app:endIconMode="clear_text"
+            app:startIconDrawable="@drawable/ic_hiking">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/lengthHike"
                 android:layout_width="match_parent"
@@ -114,6 +121,8 @@
         android:layout_height="wrap_content"
         android:inputType="textLongMessage"
         android:hint="Description for the hike"
+        android:textAlignment="center"
+        app:startIconDrawable="@drawable/ic_description"
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
