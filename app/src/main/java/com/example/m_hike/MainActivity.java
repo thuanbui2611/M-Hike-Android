@@ -2,164 +2,141 @@ package com.example.m_hike;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
-    //views
-    private FloatingActionButton addHikeBtn;
-    private RecyclerView hikesRV;
-
-    //db helper
-    private MyDbHelper dbHelper;
-    //action bar
-    ActionBar actionBar;
-    //sort options
-    String orderByNewest = Constants.C_CREATED_AT + " DESC";
-    String orderByOldest = Constants.C_CREATED_AT + " ASC";
-    String orderByNewestUpdated = Constants.C_LAST_UPDATED + " DESC";
-    String orderByOldestUpdated = Constants.C_LAST_UPDATED + " ASC";
-    String orderByNameAsc = Constants.C_NAME + " ASC";
-    String orderByNameDesc = Constants.C_NAME + " DESC";
-
-    String currentSortOption = orderByNewest;
+    FloatingActionButton fab;
+    DrawerLayout drawerLayout;
+    BottomNavigationView bottomNavView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        actionBar = getSupportActionBar();
-        //actionBar.setTitle("All Hikes");
-        //init views
-        addHikeBtn = findViewById(R.id.addHikeBtn);
-        hikesRV = findViewById(R.id.hikesRV);
+        bottomNavView = findViewById(R.id.bottomNavigationView);
+        fab = findViewById(R.id.fab);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navView = findViewById(R.id.nav_view);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
-        //init db
-        dbHelper = new MyDbHelper(this);
+        setSupportActionBar(toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
-        //load all hikes
-        loadHikes(orderByNewest);
-        //click to start add hike activity
-        addHikeBtn.setOnClickListener(new View.OnClickListener()
-        {
+        if(savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomeFragment()).commit();
+            navView.setCheckedItem(R.id.nav_home);
+        }
+
+        replaceFragment(new HomeFragment());
+
+        bottomNavView.setBackground(null);
+        bottomNavView.setOnItemSelectedListener(item -> {
+            if(item.getItemId() == R.id.home){
+                replaceFragment(new HomeFragment());
+            }
+            return true;
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this, AddUpdateHikesActivity.class);
-                intent.putExtra("isEditMode", false);
-                startActivity(intent);
+            public void onClick(View view) {
+                showBottomDialog();
             }
         });
     }
-
-    private void loadHikes(String orderBy){
-        currentSortOption = orderBy;
-        HikeAdapter hikeAdapter = new HikeAdapter(MainActivity.this,
-                dbHelper.getAllHikes(orderBy));
-        hikesRV.setAdapter(hikeAdapter);
-
-        actionBar.setSubtitle("Total: "+dbHelper.getHikesCount());
+    //
+    private  void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
     }
 
-    private void searchHike(String query){
-        HikeAdapter hikeAdapter = new HikeAdapter(MainActivity.this,
-                dbHelper.searchHike(query));
-        hikesRV.setAdapter(hikeAdapter);
-    }
+    private void showBottomDialog() {
 
-    @Override
-    protected void onResume(){
-        super.onResume();
-        loadHikes(currentSortOption); //refresh list hikes
-    }
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottomsheetlayout);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        //inflate menu
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        //search view
-        MenuItem item = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) item.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        LinearLayout videoLayout = dialog.findViewById(R.id.layoutVideo);
+        LinearLayout shortsLayout = dialog.findViewById(R.id.layoutShorts);
+        LinearLayout liveLayout = dialog.findViewById(R.id.layoutLive);
+        ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
+
+        videoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                //search when search button on keyboard clicked
-                searchHike(query);
-                return true;
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                //search as user type
-                searchHike(newText);
-                return true;
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Toast.makeText(MainActivity.this,"Upload a Video is clicked",Toast.LENGTH_SHORT).show();
+
             }
         });
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        //handle menu items
-        int id = item.getItemId();
-        if(id==R.id.action_sort)
-        {
-            sortOptionDialog();
-        }
-        else if(id==R.id.action_deleteAllHikes){
-            dbHelper.deleteAllHikes();
-            Toast.makeText(this, "Delete All Hikes Successfully!", Toast.LENGTH_SHORT).show();
-            loadHikes(currentSortOption);
-        }
-        return super.onOptionsItemSelected(item);
-    }
+        shortsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-    private void sortOptionDialog() {
-        String[] options = {"A-Z", "Z-A", "Newest", "Oldest", "Latest updated", "Oldest updated"};
-        AlertDialog.Builder builder =  new AlertDialog.Builder(this);
-        builder.setTitle("Sort By")
-                .setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if(i == 0){
-                            //A-Z
-                            loadHikes(orderByNameAsc);
-                        }
-                        else if(i == 1){
-                            //Z-A
-                            loadHikes(orderByNameDesc);
-                        }
-                        else if(i == 2){
-                            //Newest
-                            loadHikes(orderByNewest);
-                        }
-                        else if(i == 3){
-                            //Oldest
-                            loadHikes(orderByOldest);
-                        }
-                        else if(i == 4){
-                            //Latest updated
-                            loadHikes(orderByNewestUpdated);
-                        }
-                        else if(i == 5){
-                            //Oldest updated
-                            loadHikes(orderByOldestUpdated);
-                        }
-                    }
-                })
-                .create().show();
+                dialog.dismiss();
+                Toast.makeText(MainActivity.this,"Create a short is Clicked",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        liveLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Toast.makeText(MainActivity.this,"Go live is Clicked",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
     }
 }
