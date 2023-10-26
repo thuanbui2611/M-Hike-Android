@@ -125,7 +125,7 @@ public class HikeAdapter extends RecyclerView.Adapter<HikeAdapter.HolderHike>{
                     dbHelper.deleteHike(id);
                     Toast.makeText(context, "Delete hike: " + hikeName + "Successfully!", Toast.LENGTH_SHORT).show();
                     //refresh hikes
-                    ((MainActivity)context).onResume();
+                    //((MainActivity)context).onResume();
                 }
             }
         });

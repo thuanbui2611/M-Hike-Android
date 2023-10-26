@@ -40,12 +40,11 @@
         app:menu="@menu/menu_left"
         app:itemIconTint="@color/lavender"
         app:itemTextColor="@color/lavender"/>
-    <?xml version="1.0" encoding="utf-8"?>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
        >
-
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"
             android:layout_width="match_parent"
