@@ -36,7 +36,6 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
     //image cropper
     implementation("com.vanniktech:android-image-cropper:4.5.0")
-    //datetime picker
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     testImplementation("junit:junit:4.13.2")

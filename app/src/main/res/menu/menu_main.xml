@@ -7,13 +7,9 @@
     android:icon="@android:drawable/ic_menu_search"
     app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
-    <item android:id="@+id/action_sort"
-        android:title="Sort"
-        android:icon="@drawable/ic_sort_white"
-        app:showAsAction="always"/>
 
-    <item android:id="@+id/action_deleteAllHikes"
-        android:title="Delete All Hikes"
+    <item android:id="@+id/action_deleteAllContacts"
+        android:title="Delete All Contact"
         android:icon="@drawable/ic_delete_all_white"
         app:showAsAction="always"/>
 

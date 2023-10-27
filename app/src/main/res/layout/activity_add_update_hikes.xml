@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
     <ImageView
-        android:id="@+id/imageHike"
+        android:id="@+id/imageContact"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="150dp"
@@ -25,7 +25,7 @@
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:id="@+id/nameHikeLayout"
-        android:layout_below="@id/imageHike"
+        android:layout_below="@id/imageContact"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginTop="10dp"
@@ -33,14 +33,27 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         app:endIconMode="clear_text"
-        app:startIconDrawable="@drawable/ic_bookmark"
-        app:counterEnabled="true"
-        app:counterMaxLength="50"
-        android:hint="Name of Hike">
+        android:hint="Name">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nameHike"
-            android:maxLength="50"
+            android:id="@+id/nameContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        app:endIconMode="clear_text"
+        android:hint="Email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -54,196 +67,21 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         app:endIconMode="clear_text"
-        app:startIconDrawable="@drawable/ic_location"
-        android:hint="Location">
+        android:hint="Date of birth">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/location"
+            android:id="@+id/dob"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
-
-
-    <LinearLayout
-        android:id="@+id/containerForm1"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/location"
-        android:layout_width="match_parent"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="5dp"
-            android:inputType="datetime"
-            app:endIconMode="clear_text"
-            app:startIconDrawable="@drawable/ic_calendar"
-            android:hint="Date of hike" >
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/dateHike"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="5dp"
-            android:inputType="number|numberDecimal"
-            android:hint="Length (km)"
-            app:endIconMode="clear_text"
-            app:startIconDrawable="@drawable/ic_hiking">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/lengthHike"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:digits="0123456789."/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_below="@id/containerForm1"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textLongMessage"
-        android:hint="Description for the hike"
-        android:textAlignment="center"
-        app:startIconDrawable="@drawable/ic_description"
-        app:endIconMode="clear_text">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/descriptionHike"
-            android:layout_width="match_parent"
-            android:gravity="start"
-            android:layout_height="100dp"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/textView_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/parkingGroup"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="15dp"
-                android:text="Level of the hike"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-            <RadioGroup
-                android:id="@+id/levelRadioGroup"
-                android:layout_below="@id/textView_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                >
-                <RadioButton
-                    android:id="@+id/levelRadio1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Easy"
-                    android:tag="Easy">
-
-                </RadioButton>
-
-                <RadioButton
-                    android:id="@+id/levelRadio2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Medium"
-                    android:tag="Medium">
-                </RadioButton>
-                <RadioButton
-                    android:id="@+id/levelRadio3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Hard"
-                    android:tag="Hard">
-                </RadioButton>
-            </RadioGroup>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/parkingGroup"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView_parking"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/descriptionHike"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:text="Parking available"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <RadioGroup
-                android:id="@+id/parkingRadioGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/parkingRadioGroup"
-                android:layout_marginStart="15dp">
-
-                <RadioButton
-                    android:id="@+id/parkingRadio1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:tag="Yes"
-                    android:text="Yes">
-
-                </RadioButton>
-
-                <RadioButton
-                    android:id="@+id/parkingRadio2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:tag="No"
-                    android:text="No"></RadioButton>
-            </RadioGroup>
-        </LinearLayout>
-    </LinearLayout>
-        <CheckBox
-            android:id="@+id/cb_confirm_hikes"
-            android:layout_marginStart="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Agree with the terms and conditions"
-            />
         <Button
-            android:id="@+id/btn_addHike"
+            android:id="@+id/btn_addContact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"
-            android:text="Add hike"
+            android:text="Add contact"
             />
     </LinearLayout>
 </ScrollView>

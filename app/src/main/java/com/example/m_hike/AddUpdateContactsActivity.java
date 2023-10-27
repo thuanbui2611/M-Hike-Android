@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,12 +23,8 @@ import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TimePicker;
 import android.widget.Toast;
 import com.canhub.cropper.CropImageContract;
 import com.canhub.cropper.CropImageContractOptions;
@@ -41,15 +36,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class AddUpdateHikesActivity extends AppCompatActivity {
+public class AddUpdateContactsActivity extends AppCompatActivity {
 
     private Calendar selectedDateTime;
-    private ImageView imageHike;
-    private TextInputEditText nameHike, location, dateHike, lengthHike, descriptionHike;
-    private CheckBox cb_confirm_hikes;
+    private ImageView imageContact;
+    private TextInputEditText nameContact, dobContact, emailContact;
     private boolean isEditMode = false;
-    private RadioGroup levelRadioGroup, parkingRadioGroup;
-    private Button btn_addHike;
+    private Button btn_addContact;
 
     //permission constants
     private static final int CAMERA_REQUEST_CODE = 100;
@@ -63,7 +56,7 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
     //actionbar
     private ActionBar actionBar;
     //db helper
-    String id, name, location_db, date, description, level, parkingAvailable, length, createdAt, lastUpdated;;
+    String id, name, dob, email;
     private MyDbHelper dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,29 +68,23 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
         //
         actionBar = getSupportActionBar();
         //title
-        actionBar.setTitle("Add a hike");
+        actionBar.setTitle("Add a contact");
         //back button
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        imageHike = findViewById(R.id.imageHike);
-        nameHike = findViewById(R.id.nameHike);
-        location = findViewById(R.id.location);
-        dateHike = findViewById(R.id.dateHike);
-        lengthHike = findViewById(R.id.lengthHike);
-        descriptionHike = findViewById(R.id.descriptionHike);
-        parkingRadioGroup = findViewById(R.id.parkingRadioGroup);
-        levelRadioGroup = findViewById(R.id.levelRadioGroup);
-        btn_addHike = findViewById(R.id.btn_addHike);
-        cb_confirm_hikes = findViewById(R.id.cb_confirm_hikes);
-
+        imageContact = findViewById(R.id.imageContact);
+        nameContact = findViewById(R.id.nameContact);
+        emailContact = findViewById(R.id.email);
+        dobContact = findViewById(R.id.dob);
+        btn_addContact = findViewById(R.id.btn_addContact);
 
         //get data from intent
         Intent intent = getIntent();
         isEditMode = intent.getBooleanExtra("isEditMode", false);
 
         //on click date, pop up calender
-        dateHike.setOnTouchListener(new View.OnTouchListener() {
+        dobContact.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
@@ -108,7 +95,7 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
             }
         });
         //on click date, prevent open keyboard
-        dateHike.setOnClickListener(new View.OnClickListener() {
+        dobContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -120,49 +107,25 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
             //Update hike
             actionBar.setTitle("Update Hike");
             id = intent.getStringExtra("ID");
-            name = intent.getStringExtra("HIKENAME");
+            name = intent.getStringExtra("CONTACT_NAME");
             imageUri = Uri.parse(intent.getStringExtra("IMAGE"));
-            location_db = intent.getStringExtra("LOCATION");
-            date = intent.getStringExtra("DATE");
-            length = intent.getStringExtra("LENGTH");
-            level = intent.getStringExtra("LEVEL");
-            description = intent.getStringExtra("DESCRIPTION");
-            parkingAvailable = intent.getStringExtra("PARKING");
-            createdAt = intent.getStringExtra("CREATEDAT");
-            lastUpdated = intent.getStringExtra("LASTUPDATED");
+            dob = intent.getStringExtra("DOB");
+            email = intent.getStringExtra("EMAIL");
             //set data to views
-            nameHike.setText(name);
-            location.setText(location_db);
-            dateHike.setText(date);
-            lengthHike.setText(length);
-            descriptionHike.setText(description);
-            //set data to radio level, parking radio group
-            int levelRadioCount = levelRadioGroup.getChildCount();
-            for(int i = 0; i < levelRadioCount; i++){
-                RadioButton levelButton = (RadioButton) levelRadioGroup.getChildAt(i);
-                if(levelButton.getText().toString().equals(level)){
-                    levelButton.setChecked(true);
-                    break;
-                }
-            }
-            int parkingRadioCount = parkingRadioGroup.getChildCount();
-            for(int i = 0; i < parkingRadioCount; i++){
-                RadioButton parkingButton = (RadioButton) parkingRadioGroup.getChildAt(i);
-                if(parkingButton.getText().toString().equals(parkingAvailable)){
-                    parkingButton.setChecked(true);
-                    break;
-                }
-            }
+            nameContact.setText(name);
+            dobContact.setText(dob);
+            emailContact.setText(email);
+
             //set data to images
             if(imageUri.toString().equals("null")){
                 //no image, set to default image
-                imageHike.setImageResource(R.drawable.ic_image_hike);
+                imageContact.setImageResource(R.drawable.ic_image_hike);
             } else {
-                imageHike.setImageURI(imageUri);
+                imageContact.setImageURI(imageUri);
             }
         } else {
             //Create hike
-            actionBar.setTitle("Add Hike");
+            actionBar.setTitle("Add Contact");
         }
 
         //init dbHelper
@@ -172,7 +135,7 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
         storagePermissions = new String[]{Manifest.permission.READ_MEDIA_IMAGES};
 
         //click image view to show image pick dialog
-        imageHike.setOnClickListener(new View.OnClickListener(){
+        imageContact.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 //show image pick dialog
@@ -181,7 +144,7 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
         });
 
         //click add/update button to add/update the hike
-        btn_addHike.setOnClickListener(new View.OnClickListener(){
+        btn_addContact.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 inputData();
@@ -195,16 +158,9 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
             selectedDateTime.set(Calendar.MONTH, month);
             selectedDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-            TimePickerDialog timePickerDialog = new TimePickerDialog(this, (TimePicker timePicker, int hourOfDay, int minute) -> {
-                selectedDateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                selectedDateTime.set(Calendar.MINUTE, minute);
-
-                SimpleDateFormat format = new SimpleDateFormat("HH:mm, dd/MM/yyyy", Locale.getDefault());
-                String selectedDateTimeString = format.format(selectedDateTime.getTime());
-                dateHike.setText(selectedDateTimeString);
-            }, selectedDateTime.get(Calendar.HOUR_OF_DAY), selectedDateTime.get(Calendar.MINUTE), false);
-
-            timePickerDialog.show();
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            String selectedDateString = format.format(selectedDateTime.getTime());
+            dobContact.setText(selectedDateString);
         }, selectedDateTime.get(Calendar.YEAR), selectedDateTime.get(Calendar.MONTH), selectedDateTime.get(Calendar.DAY_OF_MONTH));
 
         datePickerDialog.show();
@@ -212,61 +168,32 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
 
     private void inputData(){
         //get input data
-        name = nameHike.getText().toString().trim();
-        location_db = location.getText().toString().trim();
-        date = dateHike.getText().toString().trim();
-        description = descriptionHike.getText().toString().trim();
-        length = lengthHike.getText().toString();
-
-
-        int selectedLevelId = levelRadioGroup.getCheckedRadioButtonId();
-        if(selectedLevelId != -1)
-        {
-            RadioButton radioButton = findViewById(selectedLevelId);
-            level = radioButton.getTag().toString();
-        }
-        int selectedParking = parkingRadioGroup.getCheckedRadioButtonId();
-        if(selectedParking != -1)
-        {
-            RadioButton radioButton = findViewById(selectedParking);
-            parkingAvailable = radioButton.getTag().toString();
-        }
-        String timestamp = "" + System.currentTimeMillis();
+        name = nameContact.getText().toString().trim();
+        dob = dobContact.getText().toString().trim();
+        email = emailContact.getText().toString().trim();
         //validate
         if(validateInput())
         {
             if(isEditMode){
-                //update hike
-                dbHelper.updateHike(
+                //update
+                dbHelper.updateContact(
                         ""+id,
                         ""+name,
-                        ""+location_db,
-                        ""+date,
-                        ""+length,
-                        ""+description,
-                        ""+parkingAvailable,
-                        ""+level,
                         ""+imageUri,
-                        ""+createdAt,
-                        ""+timestamp
+                        ""+dob,
+                        ""+email
                 );
-                Toast.makeText(this, "Update Hike Successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Update Contact Successfully", Toast.LENGTH_SHORT).show();
             } else {
-                //create new hike
-                dbHelper.insertHike(
+                //create new
+                dbHelper.addContact(
                         ""+name,
-                        ""+location_db,
-                        ""+date,
-                        ""+length,
-                        ""+description,
-                        ""+parkingAvailable,
-                        ""+level,
                         ""+imageUri,
-                        ""+timestamp,
-                        ""+timestamp
+                        ""+dob,
+                        ""+email
                 );
             }
-            Toast.makeText(this, "Successfully Add Hike: " + name, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Successfully Add Contact: " + name, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -274,39 +201,7 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
         boolean validateResult = true;
         if(name.trim().isEmpty())
         {
-            nameHike.setError("Name is required!");
-            validateResult = false;
-        }
-        if(location_db.trim().isEmpty()){
-            location.setError("Location is required!");
-            validateResult = false;
-        }
-        if(date.trim().isEmpty())
-        {
-            dateHike.setError("Date is required!");
-            validateResult = false;
-        }
-        if(length.trim().isEmpty())
-        {
-            lengthHike.setError("Length is required!");
-            validateResult = false;
-        } else if (!length.matches("^(-)?\\d+(\\.\\d+)?$")) {
-            lengthHike.setError("Please input valid number");
-            validateResult = false;
-        }
-        if(levelRadioGroup.getCheckedRadioButtonId() == - 1)
-        {
-            Toast.makeText(this, "Please select a level of the hike!", Toast.LENGTH_SHORT).show();
-            validateResult = false;
-        }
-        if(parkingRadioGroup.getCheckedRadioButtonId() == -1)
-        {
-            Toast.makeText(this, "Please select parking available!", Toast.LENGTH_SHORT).show();
-            validateResult = false;
-        }
-        if(!cb_confirm_hikes.isChecked())
-        {
-            Toast.makeText(this, "Please confirm to our terms and conditions!", Toast.LENGTH_SHORT).show();
+            nameContact.setError("Name is required!");
             validateResult = false;
         }
         return validateResult;
@@ -464,7 +359,6 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
                     }
                 }
             }
-
             break;
         }
     }
@@ -475,7 +369,7 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
             Uri croppedImageUri = result.getUriContent();
             imageUri = croppedImageUri;
             //set image
-            imageHike.setImageURI(croppedImageUri);
+            imageContact.setImageURI(croppedImageUri);
         } else {
             Exception error = result.getError();
             Toast.makeText(this, "Error: " + error , Toast.LENGTH_SHORT).show();

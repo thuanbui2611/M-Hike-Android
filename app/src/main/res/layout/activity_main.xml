@@ -8,15 +8,15 @@
 
     <!--RecyclerView: show all hikes-->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/hikesRV"
+        android:id="@+id/contactsRV"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/hike_item"
+        tools:listitem="@layout/contact_item"
         android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 <!--FAB Button: Start addHikeActivity to add/edit record-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addHikeBtn"
+        android:id="@+id/addContactBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -25,7 +25,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:contentDescription="add hike"
+        android:contentDescription="add contact"
         android:backgroundTint="@color/primaryGreen"
         android:src="@drawable/ic_add_hike" />
 
