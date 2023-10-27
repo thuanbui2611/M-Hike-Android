@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.m_hike"
+    namespace = "com.example.contactApp"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.m_hike"
+        applicationId = "com.example.contactApp"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

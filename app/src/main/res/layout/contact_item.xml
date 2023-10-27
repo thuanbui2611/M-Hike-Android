@@ -19,7 +19,7 @@
         android:layout_height="150dp"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="7dp"
-        android:src="@drawable/ic_image_hike"
+        android:src="@drawable/ic_image_contact"
         />
     <LinearLayout
         android:layout_centerVertical="true"

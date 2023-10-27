@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "M-Hike"
+rootProject.name = "ContactApp"
 include(":app")
  
