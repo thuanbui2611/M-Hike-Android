@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_hike"
     tools:context=".AddUpdateHikesActivity">
 <ScrollView
     android:layout_width="match_parent"
@@ -34,6 +35,7 @@
         android:inputType="text"
         app:endIconMode="clear_text"
         app:startIconDrawable="@drawable/ic_bookmark"
+        app:boxBackgroundColor="@color/white"
         app:counterEnabled="true"
         app:counterMaxLength="50"
         android:hint="Name of Hike">
@@ -55,6 +57,7 @@
         android:inputType="text"
         app:endIconMode="clear_text"
         app:startIconDrawable="@drawable/ic_location"
+        app:boxBackgroundColor="@color/white"
         android:hint="Location">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -83,14 +86,13 @@
             android:inputType="datetime"
             app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/ic_calendar"
+            app:boxBackgroundColor="@color/white"
             android:hint="Date of hike" >
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/dateHike"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
-
-
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -99,8 +101,10 @@
             android:layout_weight="1"
             android:layout_marginStart="5dp"
             android:inputType="number|numberDecimal"
-            android:hint="Length (km)"
+            android:hint="Length"
             app:endIconMode="clear_text"
+            app:suffixText="km"
+            app:boxBackgroundColor="@color/white"
             app:startIconDrawable="@drawable/ic_hiking">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/lengthHike"
@@ -122,13 +126,14 @@
         android:inputType="textLongMessage"
         android:hint="Description for the hike"
         android:textAlignment="center"
+        app:boxBackgroundColor="@color/white"
         app:startIconDrawable="@drawable/ic_description"
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/descriptionHike"
             android:layout_width="match_parent"
-            android:gravity="start"
+            android:textAlignment="center"
             android:layout_height="100dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,11 +152,12 @@
                 android:id="@+id/textView_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:layout_below="@id/parkingGroup"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
                 android:text="Level of the hike"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
             <RadioGroup
                 android:id="@+id/levelRadioGroup"
@@ -164,6 +170,8 @@
                     android:id="@+id/levelRadio1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/green"
                     android:text="Easy"
                     android:tag="Easy">
 
@@ -173,6 +181,8 @@
                     android:id="@+id/levelRadio2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/yellow"
                     android:text="Medium"
                     android:tag="Medium">
                 </RadioButton>
@@ -181,6 +191,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Hard"
+                    android:textStyle="bold"
+                    android:textColor="@color/red"
                     android:tag="Hard">
                 </RadioButton>
             </RadioGroup>
@@ -199,9 +211,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/descriptionHike"
                 android:layout_marginStart="15dp"
+                android:textStyle="bold"
                 android:layout_marginTop="10dp"
+
                 android:text="Parking available"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <RadioGroup
@@ -215,6 +229,7 @@
                     android:id="@+id/parkingRadio1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:tag="Yes"
                     android:text="Yes">
 
@@ -224,6 +239,7 @@
                     android:id="@+id/parkingRadio2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:tag="No"
                     android:text="No"></RadioButton>
             </RadioGroup>
@@ -234,6 +250,7 @@
             android:layout_marginStart="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:text="Agree with the terms and conditions"
             />
         <Button

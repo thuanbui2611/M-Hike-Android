@@ -6,6 +6,7 @@
     app:cardElevation="1dp"
     app:cardUseCompatPadding="true"
     app:contentPadding="2dp"
+    app:cardCornerRadius="10dp"
     app:cardBackgroundColor="@color/white">
     <RelativeLayout
         android:id="@+id/listObservation"
@@ -16,6 +17,8 @@
             android:layout_centerVertical="true"
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            android:layout_marginRight="10dp"
             android:src="@drawable/ic_image_hike"
             />
         <LinearLayout
@@ -31,7 +34,8 @@
                 android:id="@+id/nameObservation"
                 android:text="Observation"
                 android:textSize="24sp"
-                android:textColor="@color/black"
+                android:textColor="@color/primaryGreen"
+                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
@@ -47,11 +51,12 @@
             <TextView
                 android:id="@+id/commentObservation"
                 android:text="comment"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
+                android:maxLength="30"
                 android:layout_weight="1"/>
         </LinearLayout>
         <ImageButton

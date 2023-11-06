@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_hike"
     tools:context=".HikeDetailActivity">
 
     <LinearLayout
@@ -17,14 +18,19 @@
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_image_hike" />
 
         <!--DATA-->
         <TableLayout
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:layout_marginHorizontal="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_layout"
+            android:paddingBottom="7dp"
+            android:layout_marginTop="20dp"
             android:stretchColumns="2">
             <TableRow>
                 <TextView
@@ -38,7 +44,7 @@
                     android:text="Name of observation"
                     android:textAlignment="center"
                     android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/darkGreen" />
             </TableRow>
             <TableRow>
                 <TextView

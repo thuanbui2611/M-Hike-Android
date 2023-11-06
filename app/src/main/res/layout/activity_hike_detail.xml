@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_hike"
     tools:context=".HikeDetailActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/black_20"
         android:orientation="vertical">
         <!--Hike image-->
         <ImageView
@@ -17,14 +19,19 @@
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_image_hike" />
 
         <!--DATA-->
         <TableLayout
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:layout_marginHorizontal="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_layout"
+            android:paddingBottom="7dp"
+            android:layout_marginTop="20dp"
             android:stretchColumns="2">
             <TableRow>
                 <TextView
@@ -34,11 +41,11 @@
                     android:layout_span="3"
                     android:layout_weight="1"
                     android:padding="10dp"
+                    android:textColor="@color/darkGreen"
+                    android:textStyle="bold"
                     android:textSize="25dp"
                     android:text="Name of hike"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textAlignment="center"/>
             </TableRow>
             <TableRow>
                 <TextView
@@ -86,7 +93,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="end"
                     android:orientation="horizontal">
                     <TextView
@@ -134,7 +141,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="end"
                     android:orientation="horizontal">
                     <TextView
@@ -152,6 +159,13 @@
                         android:padding="5dp"
                         android:textSize="16dp"
                         android:text="Easy"
+                        android:shadowDx="0"
+                        android:shadowDy="1"
+                        android:shadowColor="@color/black_80"
+                        android:shadowRadius="1"
+                        android:paddingHorizontal="6dp"
+                        android:paddingBottom="2dp"
+                        android:textStyle="bold"
                         android:textColor="@color/black" />
                 </LinearLayout>
             </TableRow>

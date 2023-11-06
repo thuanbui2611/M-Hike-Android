@@ -121,10 +121,11 @@ public class HikeDetailActivity extends AppCompatActivity {
                 location.setText(locationGet);
                 date.setText(dateGet);
                 parking.setText(parkingGet);
-                length.setText(lengthGet);
+                length.setText(lengthGet + " km");
                 description.setText(descriptionGet);
                 createdAt.setText(createdAtTime);
                 lastUpdated.setText(lastUpdatedTime);
+                level.setText(levelGet);
                 if(levelGet.trim().toLowerCase().equals("easy"))
                 {
                     level.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.green));

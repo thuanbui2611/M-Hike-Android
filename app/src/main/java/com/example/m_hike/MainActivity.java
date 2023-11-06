@@ -120,9 +120,8 @@ public class MainActivity extends AppCompatActivity {
             sortOptionDialog();
         }
         else if(id==R.id.action_deleteAllHikes){
-            dbHelper.deleteAllHikes();
-            Toast.makeText(this, "Delete All Hikes Successfully!", Toast.LENGTH_SHORT).show();
-            loadHikes(currentSortOption);
+            deleteAllOptionDialog();
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -158,6 +157,27 @@ public class MainActivity extends AppCompatActivity {
                             //Oldest updated
                             loadHikes(orderByOldestUpdated);
                         }
+                    }
+                })
+                .create().show();
+    }
+
+    private void deleteAllOptionDialog() {
+        String[] options = {"OK, delete all hikes", "Cancel"};
+        AlertDialog.Builder builder =  new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Delete")
+                .setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(i == 0){
+                            dbHelper.deleteAllHikes();
+                            Toast.makeText(MainActivity.this, "Delete All Hikes Successfully!", Toast.LENGTH_SHORT).show();
+                            loadHikes(currentSortOption);
+                        }
+                        else if(i == 1){
+
+                        }
+
                     }
                 })
                 .create().show();

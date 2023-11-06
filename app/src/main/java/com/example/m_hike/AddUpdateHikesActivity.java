@@ -337,6 +337,7 @@ public class AddUpdateHikesActivity extends AppCompatActivity {
                         requestStoragePermission();
                     }
                     else {
+                        //permission already granted
                         pickFromGallery();
                     }
                 }

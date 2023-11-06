@@ -120,7 +120,6 @@ public class MyDbHelper extends SQLiteOpenHelper {
         database.close();
         return hikeList;
     }
-
     public ArrayList<HikeModel> searchHike(String query)
     {
         database = getReadableDatabase();

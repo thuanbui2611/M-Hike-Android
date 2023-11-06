@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_hike"
     tools:context=".AddUpdateObservationActivity">
     <ScrollView
         android:layout_width="match_parent"
@@ -35,6 +36,7 @@
                 app:counterEnabled="true"
                 app:counterMaxLength="50"
                 app:startIconDrawable="@drawable/ic_tag"
+                app:boxBackgroundColor="@color/white"
                 android:hint="Title of observation">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -54,6 +56,7 @@
                 android:inputType="text"
                 app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_calendar"
+                app:boxBackgroundColor="@color/white"
                 android:hint="Time">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -72,14 +75,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textLongMessage"
-                android:hint="Comment for the hike"
+                android:hint="Comment for the observation"
                 app:startIconDrawable="@drawable/ic_description"
+                app:boxBackgroundColor="@color/white"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/commentObs"
                     android:layout_width="match_parent"
-                    android:gravity="start"
+                    android:textAlignment="center"
                     android:layout_height="100dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -88,6 +92,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="Agree with the terms and conditions"
                 />
             <Button
