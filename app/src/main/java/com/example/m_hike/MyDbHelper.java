@@ -249,7 +249,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
         values.put(ObservationConstants.C_CREATED_AT, createdAt);
         values.put(ObservationConstants.C_LAST_UPDATED, lastUpdated);
 
-        database.update(ObservationConstants.TABLE_NAME, values, Constants.C_ID +" = ?",new String[]{id});
+        database.update(ObservationConstants.TABLE_NAME, values, ObservationConstants.C_ID +" = ?",new String[]{id});
         database.close();
     }
     public void deleteObservation(String id){
